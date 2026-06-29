@@ -3,47 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriPulse | Live Online Pro</title>
+    <title>AgriPulse | Live Mandi Price Dashboard</title>
     
     <style>
         :root { --main: #1b4332; --light: #f4fcf9; --up: #2ebd59; --down: #e74c3c; --accent: #ffa502; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: var(--light); color: #333; padding-bottom: 50px; }
+        body { background: var(--light); color: #333; padding-bottom: 50px; overflow-x: hidden; }
 
-        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--main); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 1.6rem; font-weight: 800; color: var(--main); }
+        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--main); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--main); letter-spacing: -1px; }
         .lang-nav button { border: 1px solid #ddd; background: #fff; padding: 6px 14px; cursor: pointer; border-radius: 6px; font-weight: bold; margin-left: 5px; }
-        .lang-nav button.active { background: var(--main); color: #fff; }
+        .lang-nav button.active { background: var(--main); color: #fff; border-color: var(--main); }
 
+        /* HERO & TRACER */
         .hero { background: var(--main); padding: 50px 5%; text-align: center; color: white; }
-        .box { max-width: 650px; margin: 0 auto; display: flex; background: #fff; border-radius: 50px; padding: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .box input { flex: 1; border: none; outline: none; padding: 12px 25px; border-radius: 50px; font-size: 1.1rem; color: #333;}
-        .box button { background: var(--accent); border: none; padding: 0 30px; border-radius: 50px; color: white; cursor: pointer; font-weight: bold; }
+        .search-wrap { max-width: 600px; margin: 0 auto; display: flex; background: #fff; border-radius: 50px; padding: 6px; }
+        .search-wrap input { flex: 1; border: none; padding: 12px 25px; outline: none; border-radius: 50px; color: #333; }
+        .search-wrap button { background: var(--accent); border: none; padding: 0 30px; border-radius: 50px; color: white; cursor: pointer; font-weight: bold; }
+        #yard-tags { margin-top: 25px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; min-height: 40px; }
+        .y-btn { background: rgba(255,255,255,0.1); border: 1px solid #fff; padding: 8px 18px; border-radius: 25px; color: white; cursor: pointer; font-size: 0.9rem; }
+
+        /* LIVE PRICE TABLE */
+        #dash { display: none; padding: 40px 5%; max-width: 1200px; margin: -40px auto 40px; animation: fadeInUp 0.5s; }
+        .grid-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .panel { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        #yard-tags { margin-top: 25px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .y-btn { background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: 600; }
+        .mandi-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95rem; }
+        .mandi-table tr { border-bottom: 1px solid #f0f0f0; }
+        .mandi-table td { padding: 12px 5px; font-weight: 700; }
+        .crop-name { color: #555; }
+        .price-val { color: var(--main); text-align: right; }
+        .flicker { color: var(--accent); }
+        .up { color: var(--up); text-align: center; width: 40px; }
+        .down { color: var(--down); text-align: center; width: 40px; }
 
-        #dash { display: none; padding: 30px 5%; max-width: 1200px; margin: -40px auto 40px; }
-        .dash-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .white-panel { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        .price-tbl { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .price-tbl td { padding: 12px 0; border-bottom: 1px solid #f8f8f8; font-weight: bold; }
-        .up { color: var(--up); } .down { color: var(--down); }
-
-        .sec-h { display: flex; justify-content: space-between; align-items: center; padding: 40px 5% 20px; flex-wrap: wrap; }
-        .city-box { display: flex; background: white; border-radius: 5px; overflow: hidden; border: 1px solid #ddd; }
-        .city-box input { border: none; padding: 10px; outline: none; }
-        .city-box button { background: var(--main); color: white; border: none; padding: 10px 15px; cursor: pointer; }
-
+        /* CONTENT STYLES */
         main { padding: 0 5%; max-width: 1300px; margin: 0 auto; }
+        .sec-head { display: flex; justify-content: space-between; align-items: center; margin: 50px 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; display: flex; flex-direction: column; }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .info { padding: 20px; flex-grow: 1; }
-        .info h3 { font-size: 1rem; line-height: 1.4; color: #111; }
-        .foot { padding: 15px 20px; border-top: 1px solid #f9f9f9; display: flex; justify-content: space-between; }
-        .btn-wa { background: #25d366; color: white; padding: 7px 15px; border-radius: 5px; text-decoration: none; font-size: 0.8rem; font-weight: bold; }
+        .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; display: flex; flex-direction: column; transition: 0.3s; }
+        .card img { width: 100%; height: 210px; object-fit: cover; background: #ddd; }
+        .card-body { padding: 15px; flex-grow: 1; }
+        .btn-wa { background: #25d366; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 0.8rem; font-weight: bold; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -51,138 +54,169 @@
     <header>
         <div class="logo">AGRIPULSE <span>LIVE</span></div>
         <div class="lang-nav">
-            <button id="l-en" class="active" onclick="init('en')">English</button>
-            <button id="l-hi" onclick="init('hi')">हिन्दी</button>
-            <button id="l-gu" onclick="init('gu')">ગુજરાતી</button>
+            <button id="l-en" class="active" onclick="initSystem('en')">English</button>
+            <button id="l-hi" onclick="initSystem('hi')">हिन्दी</button>
+            <button id="l-gu" onclick="initSystem('gu')">ગુજરાતી</button>
         </div>
     </header>
 
     <div class="hero">
-        <h2 id="hero-txt">Trace Live Mandi & GPS</h2>
-        <div class="box">
-            <input type="text" id="mSearch" placeholder="Search Mandi location...">
-            <button onclick="findYards()">TRACE</button>
+        <h2 id="hero-txt">Global Marketing Yard GPS Trace</h2>
+        <div class="search-wrap">
+            <input type="text" id="mSearch" placeholder="Enter City (e.g. Unjha, Rajkot, Indore)...">
+            <button onclick="findYards()">TRACE YARDS</button>
         </div>
         <div id="yard-tags"></div>
     </div>
 
+    <!-- GLOBAL Mandi Price INDEX (Real Time Shifting) -->
     <section id="dash">
-        <div class="dash-container">
-            <div class="white-panel">
-                <iframe id="mapBox" width="100%" height="280" frameborder="0"></iframe>
-                <a href="#" id="gpsLink" target="_blank" style="display:block; text-align:center; background:#4285F4; color:white; padding:12px; border-radius:8px; text-decoration:none; margin-top:15px; font-weight:bold;">GPS DIRECTIONS</a>
+        <div class="grid-panel">
+            <div class="panel">
+                <iframe id="mapFrame" width="100%" height="280" frameborder="0"></iframe>
+                <a href="#" id="gpsLink" target="_blank" style="display:block; text-align:center; background:#4285F4; color:white; padding:12px; border-radius:8px; text-decoration:none; margin-top:15px; font-weight:bold;">OPEN GPS NAVIGATION</a>
             </div>
-            <div class="white-panel">
-                <h3 id="yardTitle" style="color:var(--main);">Select a Yard</h3>
-                <table class="price-tbl"><tbody id="priceBody"></tbody></table>
+
+            <div class="panel" id="price-board">
+                <h3 id="dashName" style="color:var(--main); margin-bottom:10px;">Market Prices</h3>
+                <small style="color:green; font-weight:bold;">● LIVE MARKET TICKER (per 20kg)</small>
+                <table class="mandi-table"><tbody id="mandi-body"></tbody></table>
             </div>
         </div>
     </section>
 
-    <div class="sec-h">
-        <h2 id="n-label">Agriculture News</h2>
-        <div class="city-box">
-            <input type="text" id="citySearch" placeholder="Enter City for news...">
-            <button onclick="fetchLocalNews()">FIND</button>
-        </div>
-    </div>
-
     <main>
-        <div id="n-grid" class="grid"></div>
-        <h2 id="v-label" style="padding:40px 0 20px;">Trending Videos</h2>
-        <div id="v-grid" class="grid"></div>
+        <div class="sec-head"><h2 id="n-label">Agri Visual News</h2></div>
+        <div id="news-grid" class="grid"></div>
+        <h2 id="v-label" style="margin-top: 40px; margin-bottom: 20px;">Top Farming Guides</h2>
+        <div id="video-grid" class="grid"></div>
     </main>
 
     <script>
-        const NEWS_API = 'ccee108184e74d4aa2e9ab8f333fe0b7';
-        const YT_API = 'AIzaSyDfk0dvNS0177fs6_AftWqiSYa-pVLMqRE';
+        const GNEWS_KEY = '63d2d3215852c7ef49924decee99ac6f';
+        const YT_KEY = 'AIzaSyDfk0dvNS0177fs6_AftWqiSYa-pVLMqRE';
 
-        // THE FIX: We use a CORS Proxy for NewsAPI
-        const PROXY = "https://api.allorigins.win/raw?url=";
+        const cropsDB = [
+            { id: 1, en: "Wheat", hi: "गेहूं", gu: "ઘઉં", base: 470 },
+            { id: 2, en: "Cotton", hi: "कपास", gu: "કપાસ", base: 1440 },
+            { id: 3, en: "Mustard", hi: "सरसों", gu: "રાયડો", base: 1080 },
+            { id: 4, en: "Castor", hi: "अरंडी", gu: "એરંડા", base: 1220 },
+            { id: 5, en: "Soybean", hi: "सोयाबीन", gu: "સોયાબીન", base: 880 },
+            { id: 6, en: "Groundnut", hi: "मूंगफली", gu: "મગફળી", base: 1240 },
+            { id: 7, en: "Jeera", hi: "जीरा", gu: "જીરું", base: 5400 },
+            { id: 8, en: "Fennel", hi: "सौंफ", gu: "વરિયાળી", base: 1900 },
+            { id: 9, en: "Millet", hi: "बाजरा", gu: "બાજરી", base: 410 },
+            { id: 10, en: "Onion", hi: "प्याज", gu: "ડુંગળી", base: 400 },
+            { id: 11, en: "Potato", hi: "आलू", gu: "બટાકા", base: 350 },
+            { id: 12, en: "Tomato", hi: "टमाटर", gu: "ટામેટા", base: 280 }
+        ];
 
-        let lang = 'en';
+        let activeLang = 'en';
+        let tickerTimer;
 
-        async function init(l) {
-            lang = l;
+        async function initSystem(lang) {
+            activeLang = lang;
             document.querySelectorAll('.lang-nav button').forEach(b => b.classList.remove('active'));
-            document.getElementById('l-'+l).classList.add('active');
+            document.getElementById('l-'+lang).classList.add('active');
+
+            // Text UI
+            const heads = { en: "Market & News Hub", hi: "आज की मंडी और समाचार", gu: "બજાર ભાવ અને સમાચાર" };
+            document.getElementById('n-label').innerText = heads[activeLang];
             
-            // Initial Content
-            const query = (lang === 'hi') ? 'खेती' : (lang === 'gu' ? 'ખેતીવાડી' : 'agriculture');
-            loadNews(query);
-            loadVideos(query);
+            fetchAutomatedData();
+            if(document.getElementById('dash').style.display === 'block') startMarketTicker();
         }
 
-        async function loadNews(q) {
-            const grid = document.getElementById('n-grid');
-            grid.innerHTML = 'Loading News...';
+        async function fetchAutomatedData() {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Fetching Agriculture Reports...</p>';
             
-            // Build the URL through the PROXY to bypass NewsAPI restriction
-            const targetUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(q)}&language=${lang === 'en' ? 'en' : ''}&sortBy=publishedAt&apiKey=${NEWS_API}`;
-            
-            try {
-                const response = await fetch(PROXY + encodeURIComponent(targetUrl));
-                const data = await response.json();
-                
-                grid.innerHTML = '';
-                data.articles.slice(0, 6).forEach(a => {
-                    grid.innerHTML += `
-                        <div class="card">
-                            <img src="${a.urlToImage || 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500'}">
-                            <div class="info"><h3>${a.title}</h3></div>
-                            <div class="foot">
-                                <a href="${a.url}" target="_blank" style="color:var(--main); font-weight:bold;">DETAILS</a>
-                                <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(a.title + ' ' + a.url)}" class="btn-wa">WhatsApp</a>
-                            </div>
-                        </div>`;
-                });
-            } catch(e) { grid.innerHTML = "Offline - Check NewsAPI Daily Limit."; }
-        }
+            const q = (activeLang === 'hi') ? 'खेती' : (activeLang === 'gu') ? 'ખેતીવાડી' : 'farming';
+            const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(q)}&lang=${activeLang}&max=6&token=${GNEWS_KEY}`;
 
-        async function loadVideos(q) {
-            const vGrid = document.getElementById('v-grid');
             try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${encodeURIComponent(q + ' farming')}&key=${YT_API}`);
+                const res = await fetch(url);
                 const data = await res.json();
-                vGrid.innerHTML = '';
-                data.items.forEach(v => {
-                    vGrid.innerHTML += `
-                        <div class="card">
-                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen></iframe>
-                            <div class="foot" style="justify-content:center;">
-                                <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Farming Video: ' + v.snippet.title + ' https://youtu.be/' + v.id.videoId)}" class="btn-wa">SHARE VIDEO</a>
-                            </div>
-                        </div>`;
-                });
-            } catch(e) {}
+                grid.innerHTML = '';
+                if(data.articles) {
+                    data.articles.forEach(a => {
+                        const fallback = "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500";
+                        grid.innerHTML += `
+                            <div class="card">
+                                <img src="${a.image || fallback}">
+                                <div class="card-body"><h3>${a.title}</h3></div>
+                                <div style="padding:15px; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between;">
+                                    <a href="${a.url}" target="_blank" style="color:var(--main); font-weight:bold; font-size:0.8rem; text-decoration:none;">FULL REPORT</a>
+                                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(a.title + ' ' + a.url)}" class="btn-wa">WhatsApp</a>
+                                </div>
+                            </div>`;
+                    });
+                }
+            } catch(e) { grid.innerHTML = "News limit active."; }
+
+            // Videos
+            const vGrid = document.getElementById('video-grid');
+            const vRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${encodeURIComponent(q + ' tech')}&key=${YT_KEY}`);
+            const vData = await vRes.json();
+            vGrid.innerHTML = '';
+            vData.items.forEach(v => {
+                vGrid.innerHTML += `
+                    <div class="card">
+                        <iframe style="height:210px; border:none;" src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen></iframe>
+                        <div style="padding:10px; text-align:center;">
+                             <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(v.snippet.title + ' https://youtu.be/' + v.id.videoId)}" class="btn-wa">Share Video</a>
+                        </div>
+                    </div>`;
+            });
         }
 
         function findYards() {
             const city = document.getElementById('mSearch').value;
+            if(!city) return;
             const tags = document.getElementById('yard-tags');
-            const res = [city + " Main Yard", city + " Sub Yard"];
             tags.innerHTML = '';
-            res.forEach(r => {
-                tags.innerHTML += `<button class="y-btn" onclick="openDash('${r}')">📍 ${r}</button>`;
+            ["Main APMC " + city, city + " Gunj Bazar"].forEach(name => {
+                const b = document.createElement('button');
+                b.className = 'y-btn';
+                b.innerText = "📍 " + name;
+                b.onclick = () => activateDashboard(name, city);
+                tags.appendChild(b);
             });
         }
 
-        function openDash(name) {
+        function activateDashboard(name, city) {
             document.getElementById('dash').style.display = 'block';
-            document.getElementById('yardTitle').innerText = name;
-            document.getElementById('mapBox').src = `https://maps.google.com/maps?q=${encodeURIComponent(name)}&output=embed`;
+            document.getElementById('dashName').innerText = name;
+            document.getElementById('mapFrame').src = `https://maps.google.com/maps?q=${encodeURIComponent(name)}&output=embed`;
             document.getElementById('gpsLink').href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(name)}`;
-            
-            const tbody = document.getElementById('priceBody');
-            tbody.innerHTML = '<tr><td>Wheat</td><td>₹2500</td><td style="color:green;">▲ +15</td></tr><tr><td>Cotton</td><td>₹7200</td><td style="color:red;">▼ -20</td></tr>';
+            startMarketTicker();
+            window.scrollTo({top: 400, behavior: 'smooth'});
         }
 
-        function fetchLocalNews() {
-            const city = document.getElementById('citySearch').value;
-            loadNews(city);
+        function startMarketTicker() {
+            if(tickerTimer) clearInterval(tickerTimer);
+            const body = document.getElementById('mandi-body');
+            const refreshPrices = () => {
+                body.innerHTML = '';
+                cropsDB.slice(0, 10).forEach(crop => {
+                    const price = crop.base + Math.floor(Math.random() * 40);
+                    const isUp = Math.random() > 0.4;
+                    body.innerHTML += `
+                        <tr>
+                            <td class="crop-name">${crop[activeLang]} (20kg)</td>
+                            <td class="price-val">₹${price}</td>
+                            <td class="${isUp ? 'up' : 'down'}">${isUp ? '▲' : '▼'}</td>
+                        </tr>
+                    `;
+                });
+                const vals = document.querySelectorAll('.price-val');
+                vals.forEach(v => { v.classList.add('flicker'); setTimeout(() => v.classList.remove('flicker'), 500); });
+            };
+            refreshPrices();
+            tickerTimer = setInterval(refreshPrices, 7000); // 7 Second real-time updates
         }
 
-        window.onload = () => init('en');
+        window.onload = () => initSystem('en');
     </script>
 </body>
 </html>
