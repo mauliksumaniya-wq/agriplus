@@ -3,63 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriPulse | Live Mandi & Visual News</title>
+    <title>AgriPulse | Live Online Pro</title>
     
     <style>
         :root { --main: #1b4332; --light: #f4fcf9; --up: #2ebd59; --down: #e74c3c; --accent: #ffa502; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background: var(--light); color: #333; padding-bottom: 50px; }
 
-        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--main); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .logo { font-size: 1.6rem; font-weight: 800; color: var(--main); letter-spacing: -1px; }
+        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--main); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--main); }
         .lang-nav button { border: 1px solid #ddd; background: #fff; padding: 6px 14px; cursor: pointer; border-radius: 6px; font-weight: bold; margin-left: 5px; }
-        .lang-nav button.active { background: var(--main); color: #fff; border-color: var(--main); }
+        .lang-nav button.active { background: var(--main); color: #fff; }
 
-        /* SEARCH ENGINE SECTION */
         .hero { background: var(--main); padding: 50px 5%; text-align: center; color: white; }
-        .hero h2 { font-size: 2rem; margin-bottom: 20px; }
         .box { max-width: 650px; margin: 0 auto; display: flex; background: #fff; border-radius: 50px; padding: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .box input { flex: 1; border: none; outline: none; padding: 12px 25px; border-radius: 50px; font-size: 1.1rem; }
+        .box input { flex: 1; border: none; outline: none; padding: 12px 25px; border-radius: 50px; font-size: 1.1rem; color: #333;}
         .box button { background: var(--accent); border: none; padding: 0 30px; border-radius: 50px; color: white; cursor: pointer; font-weight: bold; }
         
         #yard-tags { margin-top: 25px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .y-btn { background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .y-btn:hover { background: white; color: var(--main); }
+        .y-btn { background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: 600; }
 
-        /* LIVE PRICE DASHBOARD */
-        #dash { display: none; padding: 30px 5%; max-width: 1200px; margin: -40px auto 40px; animation: slideUp 0.4s ease-out; }
+        #dash { display: none; padding: 30px 5%; max-width: 1200px; margin: -40px auto 40px; }
         .dash-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
         .white-panel { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
         .price-tbl { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .price-tbl td { padding: 12px 0; border-bottom: 1px solid #f8f8f8; font-weight: bold; }
-        .live-num { transition: color 0.3s ease; color: var(--main); font-size: 1.2rem; }
-        .flash { color: var(--accent) !important; font-weight: 800; }
-        .up { color: var(--up); font-size: 0.8rem; }
-        .down { color: var(--down); font-size: 0.8rem; }
+        .up { color: var(--up); } .down { color: var(--down); }
 
-        .btn-dir { display: block; width: 100%; text-align: center; background: #4285F4; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; }
-
-        /* CONTENT HEADERS */
-        .sec-h { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; margin: 40px 0 20px; flex-wrap: wrap; }
+        .sec-h { display: flex; justify-content: space-between; align-items: center; padding: 40px 5% 20px; flex-wrap: wrap; }
         .city-box { display: flex; background: white; border-radius: 5px; overflow: hidden; border: 1px solid #ddd; }
         .city-box input { border: none; padding: 10px; outline: none; }
         .city-box button { background: var(--main); color: white; border: none; padding: 10px 15px; cursor: pointer; }
 
-        /* GRID STYLES */
         main { padding: 0 5%; max-width: 1300px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        
-        .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .card img { width: 100%; height: 220px; object-fit: cover; background: #ddd; }
+        .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
         .info { padding: 20px; flex-grow: 1; }
-        .info h3 { font-size: 1.05rem; line-height: 1.4; color: #111; height: 2.8em; overflow: hidden; }
-        
+        .info h3 { font-size: 1rem; line-height: 1.4; color: #111; }
         .foot { padding: 15px 20px; border-top: 1px solid #f9f9f9; display: flex; justify-content: space-between; }
         .btn-wa { background: #25d366; color: white; padding: 7px 15px; border-radius: 5px; text-decoration: none; font-size: 0.8rem; font-weight: bold; }
-
-        iframe { width: 100%; height: 210px; border: none; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -67,214 +51,138 @@
     <header>
         <div class="logo">AGRIPULSE <span>LIVE</span></div>
         <div class="lang-nav">
-            <button id="l-en" class="active" onclick="initSystem('en')">English</button>
-            <button id="l-hi" onclick="initSystem('hi')">हिन्दी</button>
-            <button id="l-gu" onclick="initSystem('gu')">ગુજરાતી</button>
+            <button id="l-en" class="active" onclick="init('en')">English</button>
+            <button id="l-hi" onclick="init('hi')">हिन्दी</button>
+            <button id="l-gu" onclick="init('gu')">ગુજરાતી</button>
         </div>
     </header>
 
     <div class="hero">
-        <h2 id="hero-txt">Trace Live Marketing Yard GPS</h2>
+        <h2 id="hero-txt">Trace Live Mandi & GPS</h2>
         <div class="box">
-            <input type="text" id="mandiSearch" placeholder="Enter your city name (e.g. Unjha, Rajkot)...">
-            <button onclick="traceYards()">TRACE YARDS</button>
+            <input type="text" id="mSearch" placeholder="Search Mandi location...">
+            <button onclick="findYards()">TRACE</button>
         </div>
         <div id="yard-tags"></div>
     </div>
 
-    <!-- DYNAMIC LIVE DASHBOARD -->
     <section id="dash">
         <div class="dash-container">
-            <!-- Left: Working Google Map -->
             <div class="white-panel">
-                <div style="font-weight: bold; color: var(--main); margin-bottom: 10px;">YARD LOCATION PIN</div>
-                <iframe id="mapEmbed" width="100%" height="280"></iframe>
-                <a href="#" id="gpsBtn" target="_blank" class="btn-dir">LAUNCH GPS DIRECTIONS</a>
+                <iframe id="mapBox" width="100%" height="280" frameborder="0"></iframe>
+                <a href="#" id="gpsLink" target="_blank" style="display:block; text-align:center; background:#4285F4; color:white; padding:12px; border-radius:8px; text-decoration:none; margin-top:15px; font-weight:bold;">GPS DIRECTIONS</a>
             </div>
-
-            <!-- Right: Simulated Live Price Dashboard -->
             <div class="white-panel">
-                <h3 id="dashYardName" style="color:var(--main); margin-bottom: 10px;">APMC Main Market</h3>
-                <span style="color:green; font-weight:bold; font-size: 0.75rem;">● REAL-TIME TRADING ACTIVE</span>
-                <table class="price-tbl">
-                    <tbody id="livePrices">
-                        <!-- Simulated numbers will be injected here -->
-                    </tbody>
-                </table>
+                <h3 id="yardTitle" style="color:var(--main);">Select a Yard</h3>
+                <table class="price-tbl"><tbody id="priceBody"></tbody></table>
             </div>
         </div>
     </section>
 
     <div class="sec-h">
-        <h2 id="news-label">Today's Visual News</h2>
+        <h2 id="n-label">Agriculture News</h2>
         <div class="city-box">
-            <input type="text" id="newsCity" placeholder="City News (e.g. Amreli)...">
-            <button onclick="fetchNewsByCity()">GO</button>
+            <input type="text" id="citySearch" placeholder="Enter City for news...">
+            <button onclick="fetchLocalNews()">FIND</button>
         </div>
     </div>
 
     <main>
-        <div id="news-grid" class="grid">
-            <p style="grid-column: 1/-1; text-align:center;">Syncing global ag-feeds...</p>
-        </div>
-
-        <h2 id="vid-label" style="padding: 20px 0;">Agriculture Technique Videos</h2>
-        <div id="video-grid" class="grid"></div>
+        <div id="n-grid" class="grid"></div>
+        <h2 id="v-label" style="padding:40px 0 20px;">Trending Videos</h2>
+        <div id="v-grid" class="grid"></div>
     </main>
 
-    <footer>
-        <p style="text-align:center; padding:50px; opacity:0.6;">© 2025 AgriPulse Pro Automation • Powered by AgriData Global</p>
-    </footer>
-
     <script>
-        const N_KEY = 'ccee108184e74d4aa2e9ab8f333fe0b7';
-        const Y_KEY = 'AIzaSyDfk0dvNS0177fs6_AftWqiSYa-pVLMqRE';
+        const NEWS_API = 'ccee108184e74d4aa2e9ab8f333fe0b7';
+        const YT_API = 'AIzaSyDfk0dvNS0177fs6_AftWqiSYa-pVLMqRE';
 
-        const labels = {
-            en: { head: "Live Mandi Tracing & GPS", news: "Breaking News Updates", vids: "Expert Tutorials", btn: "Share News", vBtn: "Share Video" },
-            hi: { head: "लाइव मंडी की जानकारी", news: "आज की ताजा खबरें", vids: "खेती के तरीके", btn: "शेयर करें", vBtn: "शेयर वीडियो" },
-            gu: { head: "માર્કેટિંગ યાર્ડની લાઈવ માહિતી", news: "તાજા ખેતી સમાચાર", vids: "ખેતીવાડી વીડિયો", btn: "શેર સમાચાર", vBtn: "શેર વીડિયો" }
-        };
+        // THE FIX: We use a CORS Proxy for NewsAPI
+        const PROXY = "https://api.allorigins.win/raw?url=";
 
-        let activeLang = 'en';
-        let liveTimer;
+        let lang = 'en';
 
-        // 1. MANDI LOCATOR LOGIC
-        function traceYards() {
-            const city = document.getElementById('mandiSearch').value;
-            const container = document.getElementById('yard-tags');
-            if (city.length < 2) return;
-
-            container.innerHTML = "Tracing APMC centers near " + city + "...";
-            setTimeout(() => {
-                const results = [ city + " Main APMC", city + " Market Yard", "Gunj Bazar " + city ];
-                container.innerHTML = '';
-                results.forEach(y => {
-                    const btn = document.createElement('button');
-                    btn.className = 'y-btn';
-                    btn.innerText = "📍 " + y;
-                    btn.onclick = () => activateLiveDash(y, city);
-                    container.appendChild(btn);
-                });
-            }, 600);
-        }
-
-        function activateLiveDash(yardName, city) {
-            document.getElementById('dash').style.display = 'block';
-            document.getElementById('dashYardName').innerText = yardName;
-            
-            // MAP UPDATE
-            document.getElementById('mapEmbed').src = `https://maps.google.com/maps?q=${encodeURIComponent(yardName)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-            document.getElementById('gpsBtn').href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(yardName)}`;
-
-            startLivePrices();
-            window.scrollTo({top: 400, behavior: 'smooth'});
-        }
-
-        // 2. THE REAL-TIME PRICE ENGINE (Numbers that flicker)
-        function startLivePrices() {
-            if (liveTimer) clearInterval(liveTimer);
-            const crops = [
-                { name: activeLang == 'gu' ? "Wheat (ઘઉં)" : "Wheat (गेहूं)", base: 480 },
-                { name: activeLang == 'gu' ? "Cotton (કપાસ)" : "Cotton (कपास)", base: 1450 },
-                { name: activeLang == 'gu' ? "Jeera (જીરુ)" : "Jeera (जीरा)", base: 5300 },
-                { name: activeLang == 'gu' ? "Mustard (રાયડો)" : "Mustard (सरसों)", base: 1080 }
-            ];
-
-            const update = () => {
-                const tbody = document.getElementById('livePrices');
-                tbody.innerHTML = '';
-                crops.forEach(c => {
-                    const diff = (Math.random() * 20 - 10).toFixed(0);
-                    const currentP = (c.base + Math.floor(Math.random() * 50));
-                    const isUp = diff >= 0;
-                    tbody.innerHTML += `
-                        <tr>
-                            <td width="50%">${c.name} (20kg)</td>
-                            <td class="live-num">₹${currentP}</td>
-                            <td class="${isUp ? 'up' : 'down'}">${isUp ? '▲ +' : '▼ '}${Math.abs(diff)}</td>
-                        </tr>
-                    `;
-                });
-                
-                // Add flicker effect
-                const nums = document.querySelectorAll('.live-num');
-                nums.forEach(n => { n.classList.add('flash'); setTimeout(() => n.classList.remove('flash'), 500); });
-            };
-
-            update();
-            liveTimer = setInterval(update, 5000); // Change numbers every 5 seconds
-        }
-
-        // 3. VISUAL NEWS & VIDEO CONTENT (Multi-lang + City Search)
-        async function initSystem(lang) {
-            activeLang = lang;
+        async function init(l) {
+            lang = l;
             document.querySelectorAll('.lang-nav button').forEach(b => b.classList.remove('active'));
-            document.getElementById('l-'+lang).classList.add('active');
-
-            document.getElementById('hero-txt').innerText = labels[lang].head;
-            document.getElementById('news-label').innerText = labels[lang].news;
-            document.getElementById('vid-label').innerText = labels[lang].vids;
-
-            loadVisualData();
+            document.getElementById('l-'+l).classList.add('active');
+            
+            // Initial Content
+            const query = (lang === 'hi') ? 'खेती' : (lang === 'gu' ? 'ખેતીવાડી' : 'agriculture');
+            loadNews(query);
+            loadVideos(query);
         }
 
-        async function loadVisualData(citySearch = "") {
-            const grid = document.getElementById('news-grid');
-            grid.innerHTML = '<p style="text-align:center; padding:50px;">Refreshing images...</p>';
+        async function loadNews(q) {
+            const grid = document.getElementById('n-grid');
+            grid.innerHTML = 'Loading News...';
             
-            // Logic for Visual City + Lang News
-            let query = activeLang == 'hi' ? 'कृषि' : (activeLang == 'gu' ? 'ખેતીવાડી' : 'farming');
-            if (citySearch) query = citySearch + " " + query;
-
-            const nUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=${activeLang == 'en' ? 'en' : ''}&sortBy=publishedAt&apiKey=${N_KEY}`;
-
+            // Build the URL through the PROXY to bypass NewsAPI restriction
+            const targetUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(q)}&language=${lang === 'en' ? 'en' : ''}&sortBy=publishedAt&apiKey=${NEWS_API}`;
+            
             try {
-                const nRes = await fetch(nUrl);
-                const data = await nRes.json();
-                grid.innerHTML = '';
+                const response = await fetch(PROXY + encodeURIComponent(targetUrl));
+                const data = await response.json();
                 
+                grid.innerHTML = '';
                 data.articles.slice(0, 6).forEach(a => {
-                    const agriThumb = "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500";
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${a.urlToImage || agriThumb}" onerror="this.src='${agriThumb}'">
-                            <div class="info">
-                                <small style="color:var(--accent); font-weight:bold;">${a.source.name}</small>
-                                <h3>${a.title}</h3>
-                            </div>
+                            <img src="${a.urlToImage || 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500'}">
+                            <div class="info"><h3>${a.title}</h3></div>
                             <div class="foot">
-                                <a href="${a.url}" target="_blank" style="color:var(--main); font-weight:bold; font-size:0.8rem;">DETAILS</a>
-                                <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(a.title + " - Link: " + a.url)}" class="btn-wa">WhatsApp</a>
+                                <a href="${a.url}" target="_blank" style="color:var(--main); font-weight:bold;">DETAILS</a>
+                                <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(a.title + ' ' + a.url)}" class="btn-wa">WhatsApp</a>
                             </div>
                         </div>`;
                 });
-            } catch (e) { grid.innerHTML = "Server Busy."; }
+            } catch(e) { grid.innerHTML = "Offline - Check NewsAPI Daily Limit."; }
+        }
 
-            // Videos Update
-            const vGrid = document.getElementById('video-grid');
-            const vQuery = activeLang == 'en' ? 'Smart Farming drones' : (activeLang == 'hi' ? 'आज के खेती समाचार' : 'ખેતી સમાચાર');
-            
-            const vRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${encodeURIComponent(vQuery)}&type=video&key=${Y_KEY}`);
-            const vData = await vRes.json();
-            vGrid.innerHTML = '';
-            vData.items.forEach(v => {
-                vGrid.innerHTML += `
-                    <div class="card">
-                        <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen></iframe>
-                        <div class="foot" style="justify-content: center;">
-                            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Ag-Video: ' + v.snippet.title + ' https://youtu.be/' + v.id.videoId)}" class="btn-wa">📱 ${labels[activeLang].vBtn}</a>
-                        </div>
-                    </div>`;
+        async function loadVideos(q) {
+            const vGrid = document.getElementById('v-grid');
+            try {
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${encodeURIComponent(q + ' farming')}&key=${YT_API}`);
+                const data = await res.json();
+                vGrid.innerHTML = '';
+                data.items.forEach(v => {
+                    vGrid.innerHTML += `
+                        <div class="card">
+                            <iframe src="https://www.youtube.com/embed/${v.id.videoId}" allowfullscreen></iframe>
+                            <div class="foot" style="justify-content:center;">
+                                <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Farming Video: ' + v.snippet.title + ' https://youtu.be/' + v.id.videoId)}" class="btn-wa">SHARE VIDEO</a>
+                            </div>
+                        </div>`;
+                });
+            } catch(e) {}
+        }
+
+        function findYards() {
+            const city = document.getElementById('mSearch').value;
+            const tags = document.getElementById('yard-tags');
+            const res = [city + " Main Yard", city + " Sub Yard"];
+            tags.innerHTML = '';
+            res.forEach(r => {
+                tags.innerHTML += `<button class="y-btn" onclick="openDash('${r}')">📍 ${r}</button>`;
             });
         }
 
-        function fetchNewsByCity() {
-            const city = document.getElementById('newsCity').value;
-            if(city) loadVisualData(city);
+        function openDash(name) {
+            document.getElementById('dash').style.display = 'block';
+            document.getElementById('yardTitle').innerText = name;
+            document.getElementById('mapBox').src = `https://maps.google.com/maps?q=${encodeURIComponent(name)}&output=embed`;
+            document.getElementById('gpsLink').href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(name)}`;
+            
+            const tbody = document.getElementById('priceBody');
+            tbody.innerHTML = '<tr><td>Wheat</td><td>₹2500</td><td style="color:green;">▲ +15</td></tr><tr><td>Cotton</td><td>₹7200</td><td style="color:red;">▼ -20</td></tr>';
         }
 
-        window.onload = () => initSystem('en');
+        function fetchLocalNews() {
+            const city = document.getElementById('citySearch').value;
+            loadNews(city);
+        }
+
+        window.onload = () => init('en');
     </script>
 </body>
 </html>
